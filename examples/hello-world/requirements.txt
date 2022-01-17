@@ -1,1 +1,1 @@
-git@github.com:nludb/python-client@main#egg=nludb
+git+ssh://git@github.com/nludb/python-client@main
