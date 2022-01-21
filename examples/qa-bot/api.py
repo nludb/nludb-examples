@@ -1,15 +1,14 @@
 from typing import Dict
-from steamship import Steamship
+from steamship import Steamship, EmbeddingIndex
 
 from nludb.server import App, Response, Error, Request, post, create_lambda_handler
 
 class QuestionAnswer(App):
-  def __init__(self):
-    # Create a new Steamship client. 
-    # The appropriate credentials will automatically be applied:
-    # - [Development] from ~/.steamship.json on your disk
-    # - [Production] from the Steamship hosting environment
-    self.client = Steamship()
+  def __init__(self, client: Steamship):
+    # In production, the lambda handler will provide an NLUDB client:
+    # - Authenticated to the appropriate user
+    # - Bound to the appropriate space
+    self.client = client
 
     # Create an embedding index using (for now!) our
     # mock embedder.
@@ -21,7 +20,7 @@ class QuestionAnswer(App):
       handle="qa-index",
       model="test-embedder-v1"     
     ).data
-
+  
   @post('learn')
   def learn(self, fact: str = None) -> Response:
     """Learns a new fact."""
@@ -67,4 +66,4 @@ class QuestionAnswer(App):
     return Response(json=res.data)
 
 
-handler = create_lambda_handler(QuestionAnswer())
+handler = create_lambda_handler(QuestionAnswer)
