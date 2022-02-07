@@ -14,7 +14,7 @@ def _read_test_file(filename: str) -> str:
 
 def test_converter():
     converter = ConverterPlugin()
-    roses = _read_test_file('roses.mkd')
+    roses = _read_test_file('roses.txt')
     request = PluginRequest(data=ConvertRequest(
         data=roses,
         defaultMimeType="text/plain"
@@ -28,7 +28,7 @@ def test_converter():
     assert (response.data.root.type == BlockTypes.Document)
 
     # The root should have three paragraph children.
-    # Note: roses.mkd is markdown, but the demo converter just parses pragraphs!
+    # Note: roses.txt is markdown, but the demo converter just parses pragraphs!
     paragraphs = list(map(
         lambda para: para.strip(),
         roses.split('\n')

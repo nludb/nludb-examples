@@ -27,5 +27,5 @@ def _test_file(filename: str, expectMime: str):
     assert (response.data.mimeType == expectMime)
 
 def test_importer():
-    _test_file('roses.mkd', MimeTypes.MKD)
+    _test_file('roses.txt', MimeTypes.MKD)
     _test_file('facts.txt', MimeTypes.TXT)

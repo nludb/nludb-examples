@@ -1,56 +1,62 @@
-"""Example Steamship Converter Plugin.
+"""Example Steamship Parser Plugin.
 
-A Convert is responsible for transforming some type of data into
-Steamship's internal Block format.
+In Steamship, **Parsers** are responsible for text into sentences, tokens, and tags upon those tokens using the **Steamship Block Format**.
 """
 
 from steamship import Block, BlockTypes, MimeTypes, SteamshipError
 from steamship.app import App, post, create_handler, Response
-from steamship.plugin.converter import Converter, ConvertResponse, ConvertRequest
+from steamship.plugin.parser import Parser, ParseResponse, ParseRequest
 from steamship.plugin.service import PluginResponse, PluginRequest
+from steamship import Token, Block
+
+def _makeSentenceBlock(sentence: str, includeTokens: bool = True) -> Block:
+    """Splits the sentence in tokens on space. Dep head of all is first token"""
+    if includeTokens:
+        tokens = [Token(text=word, parentIndex=0) for word in sentence.split(" ")]
+        return Block(type=BlockTypes.Sentence, text=sentence, tokens=tokens)
+    else:
+        return Block(type=BlockTypes.Sentence, text=sentence)
 
 
-class ConverterPlugin(Converter, App):
+def _makeDocBlock(text: str, includeTokens=True) -> Block:
+    """Splits the document into sentences by assuming a period is a sentence divider."""
+    # Add the period back
+    sentences = map(lambda x: x.strip(), text.split("."))
+    sentences = list(filter(lambda s: len(s) > 0, sentences))
+    sentences = list(map(lambda s: "{}.".format(s), sentences))
+    children = [_makeSentenceBlock(sentence, includeTokens=includeTokens) for sentence in sentences]
+    return Block(text=text, type=BlockTypes.Document, children=children)
+
+
+class ParserPlugin(Parser, App):
     """"Example Steamship Converter plugin."""
 
-    def run(self, request: PluginRequest[ConvertRequest]) -> PluginResponse[ConvertResponse]:
+    def run(self, request: PluginRequest[ParseRequest]) -> PluginResponse[ParseResponse]:
         """Every plugin implements a `run` function.
 
         This template plugin does an extremely simple form of text parsing:
-            - It checks that the incoming data is text
-            - It then interprets any newline character as a paragraph break
+            - It chunks the incoming data into sentences on ANY period that it sees.
+            - It chunks each sentence into tokens on any whitespace it sees.
+            - It assigns the first token in a sentence to be the head.
         """
+        if request is None:
+            return Response(error=SteamshipError(message="Missing PluginRequest"))
 
-        # Only accept content of type text/plain. Otherwise return an error.
-        if request.data.defaultMimeType != MimeTypes.TXT:
-            return Response(error=SteamshipError(
-                message="This converter only accepts text of type {}".format(MimeTypes.TXT)
-            ))
+        if request.data is None:
+            return Response(error=SteamshipError(message="Missing ParseRequest"))
 
-        # This isn't necessary, but demonstrates that we can expect that Steamship
-        # has properly interpreted the incoming bytes as a string object.
-        if type(request.data.data) != str:
-            return Response(error=SteamshipError(
-                message="The incoming data was not of expected String type"
-            ))
+        if request.data.docs is None:
+            return Response(error=SteamshipError(message="Missing `docs` field in ParseRequest"))
 
-        # Now let's split the text into paragraphs by splitting on newline.
-        paragraphs = request.data.data.split("\n")
+        blocks = list(map(
+            lambda text: _makeDocBlock(text, includeTokens = request.data.includeTokens),
+            request.data.docs
+        ))
 
-        paragraphs = [p.strip() for p in paragraphs] # Strip extra whitespace
-        paragraphs = list(filter(lambda x: len(x) > 0, paragraphs)) # Eliminate empty paragraphs
+        return PluginResponse(data=ParseResponse(blocks=blocks))
 
-        # Finally we'll return a tree of Blocks, Steamship's internal format
-        document = Block(type=BlockTypes.Document, children=[])
-        for text in paragraphs:
-            document.children.append(Block(type=BlockTypes.Paragraph, text=text))
-
-        # And return the response. All plugins return a PluginResponse. Converter Plugins set the data
-        # field of this object to a ConvertResponse.
-        return PluginResponse(data=ConvertResponse(root=document))
-
-    @post('convert')
-    def convert(self, **kwargs) -> Response:
+    @post('parse')
+    def parse(self, **kwargs) -> Response:
         """App endpoint for our plugin.
 
         The `run` method above implements the Plugin interface for a Converter.
@@ -58,10 +64,10 @@ class ConverterPlugin(Converter, App):
 
         When developing your own plugin, you can almost always leave the below code unchanged.
         """
-        convertRequest = Converter.parse_request(request=kwargs)
-        convertResponse = self.run(convertRequest)
-        ret = Converter.response_to_dict(convertResponse)
-        return Response(json=ret)
+        request = Parser.parse_request(request=kwargs)
+        response = self.run(request)
+        dict_response = Parser.response_to_dict(response)
+        return Response(json=dict_response)
 
 
-handler = create_handler(ConverterPlugin)
+handler = create_handler(ParserPlugin)
