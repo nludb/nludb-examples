@@ -28,4 +28,4 @@ def _test_file(filename: str, expectMime: str):
 
 def test_importer():
     _test_file('roses.mkd', MimeTypes.MKD)
-    _test_file('king_speech.txt', MimeTypes.TXT)
+    _test_file('facts.txt', MimeTypes.TXT)
