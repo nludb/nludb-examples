@@ -17,19 +17,19 @@ Once a Converter has returned data to Steamship as **Block Format**, that data i
 We recommend using Python virtual environments for development.
 To set one up, run the following command from this directory:
 
-```
+```bash
 python3 -m venv .venv
 ```
 
 Activate your virtual environment by running:
 
-```
+```bash
 source .venv/bin/activate
 ```
 
 Your first time, install the required dependencies with:
 
-``` 
+```bash
 python -m pip install -r requirements.dev.txt
 python -m pip install -r requirements.txt
 ```
@@ -45,7 +45,7 @@ All the code for this plugin is located in the `src/api.py` file:
 
 Tests are located in the `test/test_api.py` file. You can run them with:
 
-``` 
+```bash
 pytest
 ```
 
@@ -55,7 +55,7 @@ We have provided sample data in the `test_data/` folder.
 
 Deploy your converter to Steamship by running:
 
-```
+```bash
 ship deploy --register-plugin
 ```
 
@@ -71,7 +71,7 @@ Your answers will be saved in the `nludb.json` file of this project.
 
 Once deployed, your Convert Plugin can be referenced by the handle in your `steamship.json` file.
 
-```
+```python
 from steamship import Steamship, BlockTypes
 
 MY_PLUGIN_HANDLE = ".. fill this out .."

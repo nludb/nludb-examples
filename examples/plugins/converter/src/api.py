@@ -43,7 +43,7 @@ class ConverterPlugin(Converter, App):
         # Finally we'll return a tree of Blocks, Steamship's internal format
         document = Block(type=BlockTypes.Document, children=[])
         for text in paragraphs:
-            document.children.append(Block(type=BlockTypes.Sentence, text=text))
+            document.children.append(Block(type=BlockTypes.Paragraph, text=text))
 
         # And return the response. All plugins return a PluginResponse. Converter Plugins set the data
         # field of this object to a ConvertResponse.
