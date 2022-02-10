@@ -5,5 +5,5 @@
   "version": "0.0.1",
   "description": "",
   "author": "",
-  "entrypoint": "api.handler"
+  "entrypoint": "src.api.handler"
 }
