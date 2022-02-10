@@ -62,8 +62,7 @@ class QuestionAnswer(App):
         suggestion = res.error.suggestion,
         code = res.error.code
       )
-    json=res.data)
-    return Response(
+    return Response(json=res.data)
 
 
 handler = create_lambda_handler(QuestionAnswer)
