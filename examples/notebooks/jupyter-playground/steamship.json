@@ -1,1 +1,8 @@
-{}
+{
+  "type": "project",
+  "name": "Jupyter Playground",
+  "handle": "jupyter-playground",
+  "version": "0.0.1",
+  "description": "",
+  "author": ""
+}
