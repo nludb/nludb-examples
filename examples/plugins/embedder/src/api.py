@@ -5,9 +5,10 @@ meaning in some abstract space.
 
 """
 
-from steamship import Block, BlockTypes, MimeTypes, SteamshipError
+from steamship import SteamshipError
 from steamship.app import App, post, create_handler, Response
-from steamship.plugin.embedder import Embedder, EmbedResponse, EmbedRequest
+from steamship.data.embedding import EmbedResponse, EmbedRequest
+from steamship.plugin.embedder import Embedder
 from steamship.plugin.service import PluginResponse, PluginRequest
 from typing import List
 
