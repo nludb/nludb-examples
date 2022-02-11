@@ -1,4 +1,4 @@
-from steamship.plugin.importer import ImportRequest
+from steamship.data.file import FileImportRequest
 from steamship.plugin.service import PluginRequest
 from src.api import FileImporterPlugin
 from steamship import MimeTypes
@@ -17,7 +17,7 @@ def _test_file(filename: str, expectMime: str):
     importer = FileImporterPlugin()
 
     file = _read_test_file(filename)
-    request = PluginRequest(data=ImportRequest(url=filename))
+    request = PluginRequest(data=FileImportRequest(url=filename))
     response = importer.run(request)
 
     assert(response.error is None)
@@ -27,5 +27,5 @@ def _test_file(filename: str, expectMime: str):
     assert (response.data.mimeType == expectMime)
 
 def test_importer():
-    _test_file('roses.txt', MimeTypes.MKD)
-    _test_file('facts.txt', MimeTypes.TXT)
+    _test_file('roses.mkd', MimeTypes.MKD)
+    _test_file('king_speech.txt', MimeTypes.TXT)

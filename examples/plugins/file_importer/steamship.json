@@ -7,7 +7,7 @@
   "author": "",
   "entrypoint": "src.api.handler",
   "plugin": {
-    "type": "importer",
-    "path": "/import"
+    "type": "fileImporter",
+    "path": "/import_file"
   }
 }
