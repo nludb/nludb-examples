@@ -1,4 +1,4 @@
-from steamship.plugin.parser import ParseRequest
+from steamship.data.parser import ParseRequest
 from steamship.plugin.service import PluginRequest
 from steamship import BlockTypes
 from src.api import ParserPlugin
