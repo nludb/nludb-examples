@@ -6,7 +6,8 @@ Steamship's internal Block format.
 
 from steamship import Block, BlockTypes, MimeTypes, SteamshipError
 from steamship.app import App, post, create_handler, Response
-from steamship.plugin.converter import Converter, ConvertResponse, ConvertRequest
+from steamship.data.converter import ConvertResponse, ConvertRequest
+from steamship.plugin.converter import Converter
 from steamship.plugin.service import PluginResponse, PluginRequest
 
 
