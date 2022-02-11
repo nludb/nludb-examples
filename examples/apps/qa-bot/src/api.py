@@ -1,11 +1,10 @@
 from typing import Dict
-from steamship import Steamship, EmbeddingIndex
-
-from nludb.server import App, Response, Error, Request, post, create_lambda_handler
+from steamship import Steamship
+from steamship.app import App, Response, Error, post, create_handler
 
 class QuestionAnswer(App):
   def __init__(self, client: Steamship):
-    # In production, the lambda handler will provide an NLUDB client:
+    # In production, the lambda handler will provide a Steamship client:
     # - Authenticated to the appropriate user
     # - Bound to the appropriate space
     self.client = client
@@ -16,9 +15,9 @@ class QuestionAnswer(App):
     # Note that the *scope* of this index is limited to the space
     # this app is executing within. Each new instance of the app
     # will resultingly have a fresh index.
-    self.index = self.nludb.create_index(
+    self.index = self.client.create_index(
       handle="qa-index",
-      model="test-embedder-v1"     
+      plugin="test-embedder-v1"     
     ).data
   
   @post('learn')
@@ -30,7 +29,7 @@ class QuestionAnswer(App):
     if self.index is None:
       return Error(message="Unable to initialize QA index.")
 
-    res = self.index.embed(fact)
+    res = self.index.insert(fact, reindex=True)
 
     if res.error:
       # Steamship error messages can be passed straight
@@ -52,7 +51,7 @@ class QuestionAnswer(App):
     if self.index is None:
       return Error(message="Unable to initialize QA index.")
 
-    res = self.index.query(query=query, k=k)
+    res = self.index.search(query=query, k=k)
 
     if res.error:
       # Steamship error messages can be passed straight
@@ -65,7 +64,7 @@ class QuestionAnswer(App):
     return Response(json=res.data)
 
 
-handler = create_lambda_handler(QuestionAnswer)
+handler = create_handler(QuestionAnswer)
 
 
 
