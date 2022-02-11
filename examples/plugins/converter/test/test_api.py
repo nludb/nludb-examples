@@ -1,4 +1,4 @@
-from steamship.plugin.converter import ConvertRequest
+from steamship.data.converter import ConvertRequest
 from steamship.plugin.service import PluginRequest
 from steamship import BlockTypes
 from src.api import ConverterPlugin
@@ -14,7 +14,7 @@ def _read_test_file(filename: str) -> str:
 
 def test_converter():
     converter = ConverterPlugin()
-    roses = _read_test_file('roses.txt')
+    roses = _read_test_file('roses.mkd')
     request = PluginRequest(data=ConvertRequest(
         data=roses,
         defaultMimeType="text/plain"
