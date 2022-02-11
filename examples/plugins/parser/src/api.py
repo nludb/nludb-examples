@@ -5,7 +5,8 @@ In Steamship, **Parsers** are responsible for text into sentences, tokens, and t
 
 from steamship import Block, BlockTypes, MimeTypes, SteamshipError
 from steamship.app import App, post, create_handler, Response
-from steamship.plugin.parser import Parser, ParseResponse, ParseRequest
+from steamship.plugin.parser import Parser
+from steamship.data.parser import ParseResponse, ParseRequest
 from steamship.plugin.service import PluginResponse, PluginRequest
 from steamship import Token, Block
 
