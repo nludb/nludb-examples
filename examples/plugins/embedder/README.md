@@ -61,12 +61,6 @@ ship deploy --register-plugin
 
 That will deploy your app to Steamship and register it as a plugin for use.
 
-The first time, you will be asked a few questions:
-* What to name your plugin
-* What handle to give your plugin
-
-Your answers will be saved in the `nludb.json` file of this project.
-
 ## Using
 
 Once deployed, your Convert Plugin can be referenced by the handle in your `steamship.json` file.

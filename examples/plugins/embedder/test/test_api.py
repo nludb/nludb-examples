@@ -1,4 +1,4 @@
-from steamship.plugin.embedder import EmbedRequest
+from steamship.data.embedding import EmbedRequest
 from steamship.plugin.service import PluginRequest
 from src.api import EmbedderPlugin
 
@@ -38,7 +38,7 @@ def test_embedder():
     embedder = EmbedderPlugin()
 
     facts = _get_test_facts()
-    response = embedder.run(PluginRequest(data=EmbedRequest(model=None, docs=facts)))
+    response = embedder.run(PluginRequest(data=EmbedRequest(plugin=None, docs=facts)))
     assert(response.error is None)
     assert(response.data is not None)
 
@@ -52,7 +52,7 @@ def test_embedder():
     ]
 
     for test in tests:
-        query_response = embedder.run(PluginRequest(data=EmbedRequest(model=None, docs=[test[0]])))
+        query_response = embedder.run(PluginRequest(data=EmbedRequest(plugin=None, docs=[test[0]])))
         assert (query_response.error is None)
         assert (query_response.data is not None)
         assert (query_response.data.embeddings is not None)
