@@ -38,8 +38,8 @@ python -m pip install -r requirements.txt
 
 All the code for this plugin is located in the `src/api.py` file:
 
-* The ImporterPlugin class
-* The `/import` endpoint
+* The FileImporterPlugin class
+* The `/import_file` endpoint
 
 ## Testing
 
@@ -60,12 +60,6 @@ ship deploy --register-plugin
 ```
 
 That will deploy your app to Steamship and register it as a plugin for use.
-
-The first time, you will be asked a few questions:
-* What to name your plugin
-* What handle to give your plugin
-
-Your answers will be saved in the `nludb.json` file of this project.
 
 ## Using
 
