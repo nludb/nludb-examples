@@ -8,6 +8,7 @@
   "entrypoint": "src.api.handler",
   "plugin": {
     "type": "parser",
-    "path": "/run"
+    "transport": "jsonOverHttp",
+    "runPath": "/parse"
   }
 }
