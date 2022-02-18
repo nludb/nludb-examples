@@ -8,6 +8,7 @@
   "entrypoint": "src.api.handler",
   "plugin": {
     "type": "corpusImporter",
-    "path": "/import_corpus"
+    "transport": "jsonOverHttp",
+    "runPath": "/import_corpus"
   }
 }

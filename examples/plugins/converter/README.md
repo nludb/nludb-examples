@@ -12,6 +12,28 @@ This sample project transforms raw text into paragraphs, but other converters mi
 
 Once a Converter has returned data to Steamship as **Block Format**, that data is ready for use by the rest of the ecosystem.
 
+## Cloning from the CLI
+
+This example can be created using the Steamship CLI. For example
+
+```
+$ ship create name-of-your-plugin-goes-here
+
+What kind of project would you like to create?
+( ) App - A full-stack, natural language microservice.
+(x) Plugin - Extend Steamship with your own model.
+( ) Project - A project which uses Steamship.
+
+What kind of plugin?
+( ) Corpus Importer - Import a corpus from another service.
+( ) File Importer - Import a file from another service.
+(x) Converter - Convert a data type into Steamship's Block Format.
+( ) Parser - Parse natural language text into tokens and tags.
+( ) Embedder - Embed natural language text into vectors of meaning.
+
+$ cd name-of-your-plugin-goes-here
+```
+
 ## First Time Setup
 
 We recommend using Python virtual environments for development.
@@ -56,16 +78,12 @@ We have provided sample data in the `test_data/` folder.
 Deploy your converter to Steamship by running:
 
 ```bash
-ship deploy --register-plugin
+ship deploy
 ```
 
 That will deploy your app to Steamship and register it as a plugin for use.
 
-The first time, you will be asked a few questions:
-* What to name your plugin
-* What handle to give your plugin
-
-Your answers will be saved in the `nludb.json` file of this project.
+**This will also provide a plugin handle. Make sure to copy this down! You will need this to call your plugin**
 
 ## Using
 

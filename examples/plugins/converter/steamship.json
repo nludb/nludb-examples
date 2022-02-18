@@ -8,6 +8,7 @@
   "entrypoint": "src.api.handler",
   "plugin": {
     "type": "importer",
-    "path": "/convert"
+    "transport": "jsonOverHttp",
+    "runPath": "/convert"
   }
 }

@@ -55,10 +55,12 @@ pytest
 Deploy your converter to Steamship by running:
 
 ```bash
-ship deploy --register-plugin
+ship deploy
 ```
 
 That will deploy your app to Steamship and register it as a plugin for use.
+
+**This will also provide a plugin handle. Make sure to copy this down! You will need this to call your plugin.**
 
 ## Using
 
@@ -74,8 +76,19 @@ request = CorpusImportRequest() # Provide the appropriate parameters
 file = client.create_file(importer=MY_PLUGIN_HANDLE, request=request)
 ```
 
+### Using in a Jupyter Notebook
+
+To use the plugin in a notebook, first install Jupyter
+
+```bash
+python3 -m pip install jupyter
+jupyter notebook
+```
+
+Create a new notebook, and then copy and paste the following
+
 ## Sharing
 
-Plesae share what you've built with hello@steamship.com! 
+Please share what you've built with hello@steamship.com! 
 
 We would love take a look, hear your suggestions, help where we can, and share what you've made with the community.
